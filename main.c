@@ -49,7 +49,7 @@ int main() {
   int totalemp = 0;
   char buffer;
   while (Running) {
-    printf("Choose An Option :\n 0.Quit -> 'e'\n 1. Add a User -> 'n' : ");
+    printf("Choose An Option :\n 0.Quit -> 'q'\n 1. Add a User -> 'n' : ");
     char option;
     scanf("%c%c", &option, &buffer);
     switch (option) {
