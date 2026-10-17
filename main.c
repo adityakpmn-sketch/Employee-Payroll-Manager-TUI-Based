@@ -45,5 +45,23 @@ int main() {
   system("clear");
   // Deduction Logic
   struct Employee E[100];
-  initEmployee(E[0]);
+  int Running = 1;
+  int totalemp = 0;
+  char buffer;
+  while (Running) {
+    printf("Choose An Option :\n 0.Quit -> 'e'\n 1. Add a User -> 'n' : ");
+    char option;
+    scanf("%c%c", &option, &buffer);
+    switch (option) {
+    case 'q':
+      Running = 0;
+      break;
+    case 'n':
+      initEmployee(E[totalemp + 1]);
+      totalemp++;
+      break;
+    default:
+      printf("Please Enter Valid Option!\n");
+    }
+  }
 }
