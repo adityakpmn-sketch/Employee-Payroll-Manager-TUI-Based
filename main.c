@@ -1,3 +1,14 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-int main() { printf("Start of Project"); }
+struct Employee {
+  char name[100];
+  char id[9];
+  float salary;
+  float bonus;
+};
+
+int main() {
+  system("clear");
+  printf("Start of Project");
+}
