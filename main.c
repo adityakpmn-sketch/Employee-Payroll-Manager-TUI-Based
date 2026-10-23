@@ -1,7 +1,15 @@
-#include <stdio.h>
-#include <stdlib.h>
 
+#include <stdio.h>
+#include <string.h>
+#define MAX_EMPLOYEES 100
 struct Employee {
+    char name[100];
+    char id[10];
+    float salary;
+    float bonus;
+    int workingdays;
+    int paidleaves;
+    int sickleaves;
   char name[100];  // 1
   char id[10];     // 2
   float salary;    // 3
@@ -10,7 +18,159 @@ struct Employee {
   int paidleaves;  // 6
   int sickleaves;  // 7
 };
+void initEmployee(struct Employee *E);
+void salaryDay(struct Employee *E);
+/* UI owns the employee list */
+struct Employee employees[MAX_EMPLOYEES];
+int totalemp = 0;
+void header(void) {
+    printf("\n");
+    printf("====================================================\n");
+    printf("             EMPLOYEE MANAGEMENT SYSTEM             \n");
+    printf("====================================================\n");
+}
+void displayMenu(void) {
+    header();
+    printf("  1. Add Employee\n");
+    printf("  2. View All Employees\n");
+    printf("  3. Calculate Salary\n");
+    printf("  4. Search Employee\n");
+    printf("  5. Exit\n");
+    printf("----------------------------------------------------\n");
+}
+void addEmployee(void) {
+    if (totalemp >= MAX_EMPLOYEES) {
+        printf("Employee storage is full!\n");
+        return;
+    }
+    initEmployee(&employees[totalemp]);
+    totalemp++;
+     printf("\nEmployee added successfully!\n");
+}
+void viewEmployees(void) {
+    header();
+    if (totalemp == 0) {
+        printf("No employees available.\n");
+        return;
+    }
+    printf("%-10s %-20s %12s %8s\n",
+           "ID", "NAME", "SALARY", "DAYS");
+    printf("----------------------------------------------------\n");
+    for (int i = 0; i < totalemp; i++) {
+        printf("%-10s %-20.20s %12.2f %8d\n",
+               employees[i].id,
+               employees[i].name,
+               employees[i].salary,
+               employees[i].workingdays);
+    }
+    printf("----------------------------------------------------\n");
+    printf("Total employees: %d\n", totalemp);
+}
+int findEmployee(const char *id) {
+    for (int i = 0; i < totalemp; i++) {
+        if (strcmp(employees[i].id, id) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+void calculateSalary(void) {
+    char id[100];
+    if (totalemp == 0) {
+        printf("No employees available.\n");
+        return;
+    }
+    printf("Enter employee ID: ");
+    if (fgets(id, sizeof(id), stdin) == NULL) {
+        return;
+    }
+    id[strcspn(id, "\n")] = '\0';
+    int index = findEmployee(id);
+    if (index == -1) {
+        printf("Employee not found.\n");
+        return;
+    }
+    salaryDay(&employees[index]);
+}
+void searchEmployee(void) {
+    char id[100];
+    if (totalemp == 0) {
+        printf("No employees available.\n");
+        return;
+    }
+     printf("Enter employee ID: ");
 
+    if (fgets(id, sizeof(id), stdin) == NULL) {
+        return;
+    }
+
+    id[strcspn(id, "\n")] = '\0';
+
+    int index = findEmployee(id);
+
+    if (index == -1) {
+        printf("Employee not found.\n");
+        return;
+    }
+
+    struct Employee *E = &employees[index];
+
+    header();
+    printf("Name          : %s\n", E->name);
+    printf("ID            : %s\n", E->id);
+    printf("Base Salary   : %.2f\n", E->salary);
+    printf("Working Days  : %d\n", E->workingdays);
+    printf("Paid Leaves   : %d\n", E->paidleaves);
+    printf("Sick Leaves   : %d\n", E->sickleaves);
+    printf("Bonus         : %.2f%%\n", E->bonus);
+}
+
+int main(void) {
+    while (1) {
+        displayMenu();
+
+        printf("Select option (1-5): ");
+
+        char input[30];
+
+        if (fgets(input, sizeof(input), stdin) == NULL) {
+            break;
+        }
+
+        int choice;
+
+        if (sscanf(input, "%d", &choice) != 1) {
+            printf("Please enter a valid menu number.\n");
+            continue;
+        }
+
+        switch (choice) {
+            case 1:
+                addEmployee();
+                break;
+            case 2:
+                viewEmployees();
+                break;
+            case 3:
+                calculateSalary();
+                break;
+            case 4:
+                searchEmployee();
+                break;
+            case 5:
+                printf("Exiting Employee Management System.\n");
+                return 0;
+            default:
+                printf("Choose an option from 1 to 5.\n");
+        }
+
+        printf("\nPress ENTER to continue...");
+        int ch;
+        while ((ch = getchar()) != '\n' && ch != EOF) {
+        }
+    }
+
+    return 0;
 void initEmployee(struct Employee *E) {
   char ch = ' ';
   printf("Enter Name : ");
