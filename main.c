@@ -70,11 +70,11 @@ void salaryDay(struct Employee *E) {
                        (totalWorkingdays - E->paidleaves - E->sickleaves)) *
                       E->salary;
   E->bonus = (finalSalary <= E->salary)
-                 ? 10
+                 ? ((E->salary - finalSalary) / E->salary) * 100
                  : (((finalSalary - E->salary) / E->salary * 100 > 30)
                         ? 20
                         : ((finalSalary - E->salary) / E->salary * 100) + 10);
-  printf("Bonus : %f\n", E->bonus);
+  printf("Bonus : %f\n", (E->bonus > 0) ? E->bonus : 0.0f);
   finalSalary = E->salary * (1 + E->bonus / 100);
   printf("Final salary : %f\n", finalSalary);
 }
@@ -85,12 +85,62 @@ int main() {
   struct Employee E[100];
   int Running = 1;
   int totalemp = 0;
-  char buffer;
-  initEmployee(&E[0]);
-  printvar(E[0].name);
-  printvar(E[0].id);
-  printf("%.2f\n", E[0].salary);
-  printf("%d\n", E[0].sickleaves);
-  printf("%d\n", E[0].paidleaves);
-  salaryDay(&E[0]);
+  char buffer, option;
+  printf("==========================================================\n");
+  printf("                Employee Payroll Management               \n");
+  printf("==========================================================\n");
+  while (Running) {
+    printf("==========================================================\n");
+    printf("                           Menu                           \n");
+    printf("==========================================================\n");
+    printf("  1. n -> New Employee\n  2. l -> List "
+           "Employee\n  3. s -> Enter Salaries\n  4. c -> Clear whole screen"
+           "\n  5. q -> quit application\nEnter an Option : ");
+    scanf("%c%c", &option, &buffer);
+    if (option == 'q') {
+      Running = 0;
+    } else if (option == 'n') {
+      printf("==========================================================\n");
+      printf("                      New Employee                        \n");
+      printf("==========================================================\n");
+    ReEnter:
+      initEmployee(&E[totalemp]);
+      for (int i = 0; i < totalemp; i++) {
+        if (E[i].id[6] == E[totalemp].id[6] &&
+            E[i].id[7] == E[totalemp].id[7] &&
+            E[i].id[8] == E[totalemp].id[8]) {
+          printf("Employee Already Exists! Please Recheck and Reenter the "
+                 "name!\n");
+          goto ReEnter;
+        }
+      }
+      totalemp++;
+    } else if (option == 'l') {
+      printf("==========================================================\n");
+      printf("                      Employee List                       \n");
+      printf("==========================================================\n");
+      for (int i = 0; i < totalemp; i++) {
+        printf("Name : ");
+        printvar(E[i].name);
+        printf("Id : ");
+        printvar(E[i].id);
+        printf("Salary : %.2f\n", E[i].salary);
+      }
+    } else if (option == 's') {
+      printf("==========================================================\n");
+      printf("                    Employee Salaries                     \n");
+      printf("==========================================================\n");
+      for (int i = 0; i < totalemp; i++) {
+        printf("For ID : %s", E[i].id);
+        salaryDay(&E[i]);
+      }
+    } else if (option == 'c') {
+      system("clear");
+      printf("==========================================================\n");
+      printf("                Employee Payroll Management               \n");
+      printf("==========================================================\n");
+    } else {
+      printf("Enter a Valid Option!\n");
+    }
+  }
 }
