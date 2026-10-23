@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Employee { //structure to hold employye data
+char buffer;
+
+struct Employee {
   char name[100];  // 1
   char id[10];     // 2
   float salary;    // 3
@@ -77,6 +79,7 @@ void salaryDay(struct Employee *E) {//function to calculate salary based on numb
   printf("Bonus : %f\n", (E->bonus > 0) ? E->bonus : 0.0f);
   finalSalary = E->salary * (1 + E->bonus / 100);//final salary 
   printf("Final salary : %f\n", finalSalary);
+  scanf("%c",&buffer);
 }
 
 int main() {//TUI
@@ -85,7 +88,7 @@ int main() {//TUI
   struct Employee E[100];
   int Running = 1;
   int totalemp = 0;
-  char buffer, option;
+  char option;
   printf("==========================================================\n");
   printf("                Employee Payroll Management               \n");
   printf("==========================================================\n");
