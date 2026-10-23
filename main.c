@@ -3,13 +3,6 @@
 #include <string.h>
 #define MAX_EMPLOYEES 100
 struct Employee {
-    char name[100];
-    char id[10];
-    float salary;
-    float bonus;
-    int workingdays;
-    int paidleaves;
-    int sickleaves;
   char name[100];  // 1
   char id[10];     // 2
   float salary;    // 3
