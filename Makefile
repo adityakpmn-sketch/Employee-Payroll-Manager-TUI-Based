@@ -1,5 +1,5 @@
 # Compiler and flags
-CC = clang
+CC = gcc
 DFLAGS = -Wall -Wextra -std=c99 $(CFLAGS)
 CFLAGS = -lm
 
